@@ -68,4 +68,13 @@ function blockAngel(){if(!dodgeRunning)return;blocking=true;const p=$('player');
 function createHazard(){if(!dodgeRunning)return;const field=$('field');if(!field)return;const words=['SCAM','PENIPU','SPAM','BLOCK'],item=document.createElement('div');item.className='hazard';item.textContent=words[Math.floor(Math.random()*words.length)];item.style.left=(Math.random()*76+5)+'%';field.appendChild(item);let y=-40;const speed=2.1+Math.min(score/35,3.5);const move=setInterval(()=>{if(!dodgeRunning||!item.isConnected){clearInterval(move);return;}y+=speed;item.style.top=y+'px';const p=$('player');if(!p){clearInterval(move);item.remove();return;}const a=item.getBoundingClientRect(),b=p.getBoundingClientRect(),hit=a.bottom>b.top+8&&a.top<b.bottom&&a.right>b.left&&a.left<b.right;if(hit){clearInterval(move);item.remove();if(!blocking)endDodge();return;}if(y>field.clientHeight){clearInterval(move);item.remove();}},25);activeHazards.push(move);}
 function endDodge(){stopDodge();const field=$('field');if(field)field.innerHTML=`<div style="text-align:center;padding:75px 12px"><div style="font-size:52px">🪽</div><h3>Game Over</h3><p>Your score: ${score}</p><button class="game-btn" onclick="startDodge()">PLAY AGAIN</button></div>`;}
 document.addEventListener('keydown',e=>{if(!dodgeRunning)return;if(e.key==='ArrowLeft'||e.key.toLowerCase()==='a'){e.preventDefault();moveAngel(-1)}if(e.key==='ArrowRight'||e.key.toLowerCase()==='d'){e.preventDefault();moveAngel(1)}});
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js");
+  });
+}
+</script>
+  
 </script></body></html>
